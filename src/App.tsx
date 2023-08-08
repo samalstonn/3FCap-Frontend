@@ -14,6 +14,9 @@ function App() {
           </li>
         </ul>
       </nav>
+      <div>
+        <input type="text" value="XZDG6" />
+      </div>
     </>
   )
 }
