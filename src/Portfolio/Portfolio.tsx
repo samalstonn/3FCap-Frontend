@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import { PortfolioStock } from "./model"
 import { AgGridReact } from "ag-grid-react"
-import { ColDef, ColGroupDef } from "ag-grid-community"
+import { ColDef } from "ag-grid-community"
 
 
 async function loadData() {
@@ -28,11 +28,10 @@ export function Portfolio() {
     }
     async function handleLoad(onDataLoaded: (data: PortfolioStock[]) => void) {
         await loadData().then((response) => response.json()).then((payload) => {
-            console.log(payload)
             onDataLoaded(payload.PortfolioResponse.AccountPortfolio[0].Position.map((position: any) => {
                 return {
                     Symbol: position.Product.symbol,
-                    Type: position.Product.securityType,
+                    Type: position.positionType,
                     Price: position.Quick.lastTrade,
                     Quantity: position.quantity,
                     DayChange: position.daysGain,
