@@ -35,8 +35,8 @@ export function Portfolio() {
                     Type: position.Product.securityType,
                     Price: position.Quick.lastTrade,
                     Quantity: position.quantity,
-                    DayChange: position.Quick.daysGain,
-                    DayChangePercent: position.Quick.daysGainPct,
+                    DayChange: position.daysGain,
+                    DayChangePercent: position.daysGainPct,
                     TotalChange: position.totalGain,
                     TotalChangePercent: position.totalGainPct,
                 }
