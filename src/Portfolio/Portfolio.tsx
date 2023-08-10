@@ -5,6 +5,7 @@ import { AgGridReact } from "ag-grid-react"
 import { ColDef, GridApi } from "ag-grid-community"
 
 
+
 async function loadData() {
     const url = "http://localhost:5000/portfolio"
     return fetch(url)
@@ -15,7 +16,7 @@ export function Portfolio() {
     const columnDefs: ColDef<PortfolioStock>[] = [
         { headerName: "Symbol", field: "Symbol" },
         { headerName: "Type", field: "Type" },
-        { headerName: "Price", field: "Price" },
+        { headerName: "Price", field: "Price", cellRenderer: 'agAnimateShowChangeCellRenderer' },
         { headerName: "Quantity", field: "Quantity" },
         { headerName: "Day Change", field: "DayChange" },
         { headerName: "Day Change Percent", field: "DayChangePercent" },
