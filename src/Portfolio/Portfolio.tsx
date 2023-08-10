@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import Button from "@mui/material/Button"
 import { PortfolioStock } from "./model"
 import { AgGridReact } from "ag-grid-react"
-import { ColDef } from "ag-grid-community"
+import { ColDef, GridApi } from "ag-grid-community"
 
 
 async function loadData() {
@@ -11,7 +11,7 @@ async function loadData() {
 }
 
 export function Portfolio() {
-    const [data, setData] = useState<PortfolioStock[]>([])
+    const [gridApi, setGridApi] = useState<GridApi | null>(null)
     const columnDefs: ColDef<PortfolioStock>[] = [
         { headerName: "Symbol", field: "Symbol" },
         { headerName: "Type", field: "Type" },
@@ -24,11 +24,11 @@ export function Portfolio() {
     ]
 
     const onDataLoaded = (data: PortfolioStock[]) => {
-        setData(data)
+        gridApi?.setRowData(data)
     }
     async function handleLoad(onDataLoaded: (data: PortfolioStock[]) => void) {
         await loadData().then((response) => response.json()).then((payload) => {
-            onDataLoaded(payload.PortfolioResponse.AccountPortfolio[0].Position.map((position: any) => {
+            onDataLoaded(payload.map((position: any) => {
                 return {
                     Symbol: position.Product.symbol,
                     Type: position.positionType,
@@ -43,18 +43,19 @@ export function Portfolio() {
         })
     }
 
+    const onGridReady = (params: any) => {
+        setGridApi(params.api)
+    }
+
     return (
         <div>
-            <Button variant="contained" onClick={() => {
-                handleLoad(onDataLoaded)
-            }}>Login</Button>
             <Button variant="contained" onClick={() => {
                 handleLoad(onDataLoaded)
             }}>Refresh</Button>
             <div className="ag-theme-alpine" style={{
                 width: "82.5%", height: 1000
             }}>
-                <AgGridReact rowData={data} columnDefs={columnDefs} />
+                <AgGridReact rowData={[]} columnDefs={columnDefs} onGridReady={onGridReady} />
             </div>
         </div>
     )
